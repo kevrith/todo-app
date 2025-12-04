@@ -65,3 +65,46 @@ For `["(1,2)", "(2,4)", "(7,2)"]`:
 - Node 2 is child of 4
 - Node 7 is child of 2
 */
+
+
+
+/*
+SOLUTION 2
+*/
+function TreeConstructor(strArr) {
+  let parents = {}; // To store the count of children for each parent
+  let children = {}; // To store the parent of each child and check for duplicates
+
+  for (let i = 0; i < strArr.length; i++) {
+    // Extract child and parent IDs from the string (e.g., "(1,2)" -> ["1", "2"])
+    let pair = strArr[i].replace(/[()]/g, "").split(",");
+    let child = pair[0];
+    let parent = pair[1];
+
+// Check Rule 1: A child can only have one parent.
+// If this child is already in the children map, it has more than one parent.
+if (children[child]) {
+  return false;
+} else {
+  children[child] = parent;
+}
+
+// Check Rule 2: A parent can only have at most two children.
+// Use the parents map to count children.
+if (parents[parent]) {
+  parents[parent].push(child);
+} else {
+  parents[parent] = [child];
+}
+if (parents[parent].length > 2) {
+  return false;
+}
+  }
+  // The problem statement guarantees that all integers in the tree are unique.
+
+  // If the loop completes without violating any rules, a valid binary tree can be formed.
+  return true;
+}
+
+// Example usage:
+// console.log(TreeConstructor(["(1,2)", "(2,4)", "(5,7)", "(7,2)", "(9,5)"])); // Output: true
